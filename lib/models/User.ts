@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role: 'mentee' | 'mentor';
+  role: "mentee" | "mentor";
   bio?: string;
   skills?: string[];
   createdAt: Date;
@@ -13,21 +13,21 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema({
   name: {
     type: String,
-    required: [true, 'Please provide a name'],
-    maxlength: [60, 'Name cannot be more than 60 characters'],
+    required: [true, "Please provide a name"],
+    maxlength: [60, "Name cannot be more than 60 characters"],
   },
   email: {
     type: String,
-    required: [true, 'Please provide an email'],
+    required: [true, "Please provide an email"],
     unique: true,
   },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
+    required: [true, "Please provide a password"],
   },
   role: {
     type: String,
-    enum: ['mentee', 'mentor'],
+    enum: ["mentee", "mentor"],
     required: true,
   },
   bio: String,
@@ -38,4 +38,5 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+export default mongoose.models.User ||
+  mongoose.model<IUser>("User", UserSchema);

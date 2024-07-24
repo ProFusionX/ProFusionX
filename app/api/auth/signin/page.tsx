@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await signIn('credentials', {
+    const result = await signIn("credentials", {
       email,
       password,
       redirect: false,
@@ -22,7 +22,7 @@ export default function SignIn() {
       console.error(result.error);
     } else {
       // Redirect to dashboard
-      router.push('/dashboard/mentee');  // or '/dashboard/mentor' based on user role
+      router.push("/dashboard/mentee"); // or '/dashboard/mentor' based on user role
     }
   };
 

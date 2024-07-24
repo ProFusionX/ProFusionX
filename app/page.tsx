@@ -1,22 +1,17 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import Link from 'next/link'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'Mentor-Mentee Platform',
-  description: 'Connect mentors and mentees for learning and growth',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function Home() {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1 className="text-4xl font-bold">Welcome to ProtegeHub</h1>
+      <div className="flex gap-4">
+        <Link href="/auth/signin" className="px-4 py-2 bg-blue-500 text-white rounded">
+          Sign In
+        </Link>
+        <Link href="/auth/signup" className="px-4 py-2 bg-green-500 text-white rounded">
+          Sign Up
+        </Link>
+      </div>
+    </main>
   )
 }
