@@ -8,21 +8,45 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("mentee");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role }),
-    });
+    setError(""); // Clear any existing errors
 
-    if (response.ok) {
-      router.push("/auth/signin");
-    } else {
-      // Handle error
-      console.error("Sign up failed");
+    try {
+      const signupResponse = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
+      });
+
+      if (signupResponse.ok) {
+        // Signup successful, now let's sign in
+        const signinResponse = await fetch("/api/auth/signin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (signinResponse.ok) {
+          // Sign in successful, redirect to appropriate dashboard
+          const dashboardPath =
+            role === "mentor" ? "/dashboard/mentor" : "/dashboard/mentee";
+          router.push(dashboardPath);
+        } else {
+          throw new Error("Sign in failed after successful signup");
+        }
+      } else {
+        const errorData = await signupResponse.json();
+        throw new Error(errorData.error || "Sign up failed");
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred"
+      );
+      console.error(err);
     }
   };
 
@@ -34,6 +58,14 @@ export default function SignUp() {
             Create your account
           </h2>
         </div>
+        {error && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>

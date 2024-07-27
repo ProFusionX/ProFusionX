@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { compare } from "bcryptjs";
 import dbConnect from "@/lib/mongodb";
 import User from "@/lib/models/User";
-import { generateToken } from "@/lib/auth";
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -27,9 +26,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = generateToken(user._id.toString());
-
-    return NextResponse.json({ success: true, token });
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.json(

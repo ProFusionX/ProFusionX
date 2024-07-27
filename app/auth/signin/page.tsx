@@ -7,22 +7,40 @@ import { useRouter } from "next/navigation";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    setError(""); // Clear any existing errors
 
-    if (result?.error) {
-      // Handle error
-      console.error(result.error);
-    } else {
-      // Redirect to dashboard
-      router.push("/dashboard/mentee"); // or '/dashboard/mentor' based on user role
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+
+      // Fetch user data to get the role
+      const userResponse = await fetch("/api/auth/user");
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const userData = await userResponse.json();
+      const dashboardPath =
+        userData.role === "mentor" ? "/dashboard/mentor" : "/dashboard/mentee";
+
+      router.push(dashboardPath);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred"
+      );
+      console.error(err);
     }
   };
 
@@ -34,6 +52,14 @@ export default function SignIn() {
             Sign in to your account
           </h2>
         </div>
+        {error && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <span className="block sm:inline">{error}</span>
+          </div>
+        )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
