@@ -8,6 +8,13 @@ export interface IUser extends Document {
   bio?: string;
   skills?: string[];
   createdAt: Date;
+  profile?: {
+    experienceLevel?: string;
+    learningGoals?: string;
+    expertise?: string;
+    companyAffiliation?: string;
+    mentoringInterests?: string;
+  };
 }
 
 const UserSchema: Schema = new Schema({
@@ -35,6 +42,13 @@ const UserSchema: Schema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  profile: {
+    experienceLevel: String,
+    learningGoals: String,
+    expertise: String,
+    companyAffiliation: String,
+    mentoringInterests: String,
   },
 });
 

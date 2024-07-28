@@ -1,7 +1,7 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -10,10 +10,26 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role) {
+      switch (session.user.role) {
+        case "mentor":
+          router.push("/dashboard/mentor");
+          break;
+        case "mentee":
+          router.push("/dashboard/mentee");
+          break;
+        default:
+          router.push("/dashboard");
+      }
+    }
+  }, [session, status, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // Clear any existing errors
+    setError("");
 
     try {
       const result = await signIn("credentials", {
@@ -23,24 +39,10 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        throw new Error(result.error);
+        setError(result.error);
       }
-
-      // Fetch user data to get the role
-      const userResponse = await fetch("/api/auth/user");
-      if (!userResponse.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-
-      const userData = await userResponse.json();
-      const dashboardPath =
-        userData.role === "mentor" ? "/dashboard/mentor" : "/dashboard/mentee";
-
-      router.push(dashboardPath);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred"
-      );
+      setError("An unexpected error occurred");
       console.error(err);
     }
   };
@@ -107,36 +109,10 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Sign in
             </button>
