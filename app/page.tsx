@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-300 via-gray-100 to-green-300 text-gray-800">
       <div className="max-w-4xl mx-auto text-center">
         <div className="h-20 mb-8">
           {" "}
