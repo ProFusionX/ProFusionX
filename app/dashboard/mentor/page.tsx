@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import TaskCard from "@/components/TaskCard";
+import ProfileOverview from "@/components/ProfileOverview";
 import TaskForm from "@/components/TaskFrom";
 
 interface Task {
@@ -32,7 +33,7 @@ export default function MentorDashboard() {
   }, [session, status, router]);
 
   const fetchTasks = async () => {
-    const res = await fetch("/api/tasks");
+    const res = await fetch("/api/tasks/created");
     const data = await res.json();
     if (data.success) {
       setTasks(data.data);
@@ -59,7 +60,7 @@ export default function MentorDashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Mentor Dashboard</h1>
+      <ProfileOverview user={session?.user} />
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Create New Task</h2>
         <TaskForm onSubmit={handleCreateTask} />

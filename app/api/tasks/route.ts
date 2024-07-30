@@ -4,7 +4,13 @@ import dbConnect from "@/lib/mongodb";
 import Task from "@/lib/models/Task";
 import { authOptions } from "../auth/[...nextauth]/route";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   await dbConnect();
 
   try {

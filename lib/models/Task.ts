@@ -1,4 +1,3 @@
-// lib/models/Task.ts
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 interface ITask extends Document {

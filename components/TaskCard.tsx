@@ -12,6 +12,7 @@ interface Task {
 
 interface TaskCardProps {
   task: Task;
+  onApply?: () => void;
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
