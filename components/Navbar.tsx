@@ -1,85 +1,61 @@
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-import Image from "next/image";
+import React from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 
-export default function Navbar() {
-  const { data: session } = useSession();
+const Navbar: React.FC = () => {
+  const { data: session, status } = useSession();
 
   return (
-    <nav className="bg-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              ProConnect
+    <nav className="bg-blue-600 text-white shadow-lg">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <Link href="/" className="text-2xl font-bold">
+            Mentor-Mentee Platform
+          </Link>
+          <div className="space-x-4">
+            <Link href="/" className="hover:text-blue-200">
+              Home
             </Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
-              {session?.user.role === "mentor" && (
-                <Link
-                  href="/dashboard/mentor"
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-blue-600"
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Mentor Dashboard
+            {status === 'authenticated' && (
+              <>
+                <Link href="/projects" className="hover:text-blue-200">
+                  Projects
                 </Link>
-              )}
-              {session?.user.role === "mentee" && (
-                <Link
-                  href="/dashboard/mentee"
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-green-600"
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v13m0-13V0l4 4m-4 4L12 4"
-                    />
-                  </svg>
-                  Mentee Dashboard
+                <Link href="/tasks" className="hover:text-blue-200">
+                  Tasks
                 </Link>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <div className="mr-4">
-              <span className="text-gray-700">{session?.user.name}</span>
-              {session?.user?.image && (
-                <Image
-                  src={session?.user?.image}
-                  alt="Profile Picture"
-                  className="w-8 h-8 rounded-full ml-2"
-                  width={32}
-                  height={32}
-                />
-              )}
-            </div>
-            <button
-              onClick={() => signOut()}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Sign Out
-            </button>
+                <Link href="/bounties" className="hover:text-blue-200">
+                  Bounties
+                </Link>
+                <Link href="/messages" className="hover:text-blue-200">
+                  Messages
+                </Link>
+                <Link href={`/profile/${session.user.id}`} className="hover:text-blue-200">
+                  Profile
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Sign Out
+                </button>
+              </>
+            )}
+            {status === 'unauthenticated' && (
+              <>
+                <Link href="/auth/signin" className="hover:text-blue-200">
+                  Sign In
+                </Link>
+                <Link href="/auth/signup" className="hover:text-blue-200">
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

@@ -1,26 +1,18 @@
+import { getUserFromSession } from "@/lib/utlis";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../[...nextauth]/route";
-import dbConnect from "@/lib/mongodb";
-import User from "@/lib/models/User";
+import { IncomingMessage, ServerResponse } from "http";
 
-export async function GET() {
-  await dbConnect();
+export async function GET(req: any) {
+  const res: ServerResponse<IncomingMessage> = req.res;
 
-  const session = await getServerSession(authOptions);
+  const user = await getUserFromSession(req, res);
 
-  if (session && session.user) {
-    const user = await User.findOne({ email: session.user.email });
-
-    if (user) {
-      return NextResponse.json({
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      });
-    }
+  if (user) {
+    return NextResponse.json({
+      id: user._id.toString(),
+      name: user.name,
+    });
+  } else {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
 }
