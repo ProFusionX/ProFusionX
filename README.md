@@ -8,7 +8,7 @@ ProFusionX is a platform designed to connect mentors and mentees for learning an
 + [Usage](#usage)
 + [Environment Variables](#environment-variables)
 + [Contributing](#contributing)
-+ [License](#license)icense
++ [License](#license)
 
 ### Installation
 
