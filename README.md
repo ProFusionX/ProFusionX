@@ -51,7 +51,7 @@ NEXT_PUBLIC_PUSHER_CLUSTER="your_cluster"
 
 ### Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
+Contributions are welcome! Please open an issue or submit a pull request for any changes. For detailed tasks and action plan, please refer to our [Notion page](https://www.notion.so/smngvlkz/The-Action-Plan-1673b153c5364872b1f24a87b1cd594d?pvs=4) - Please note, the link is invite only
 
 ### License
 
