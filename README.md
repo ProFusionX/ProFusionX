@@ -1,6 +1,12 @@
 ## ProFusionX
 
-ProFusionX is a platform designed to connect mentors and mentees for learning and growth. This project is built using Next.js and integrates with MongoDB for data storage.
+ProFusionX is a platform to connect mentors and mentees for learning and growth. The aim is to empower meaningful connections, knowledge sharing, and development for all parties involved. It's designed to bridge the gap for junior talent struggling to get employed.
+
+**Mentees:** Gain practical experience, build your portfolio, and get a foot in the industry by working on innovative projects.
+
+**Mentors:** Find reliable, skilled subordinates to delegate tasks, freeing up time for high-leverage work while paying it forward.
+
+This project uses Next.js, TypeScript, and TailwindCSS, and integrates with MongoDB for data storage.
 
 ### Table of Contents
 
