@@ -6,7 +6,7 @@ import ClientProvider from "@/components/ClientProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ProConnect",
+  title: "ProFusionX",
   description: "Connect mentors and mentees for learning and growth",
 };
 
