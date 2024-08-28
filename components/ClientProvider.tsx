@@ -11,7 +11,6 @@ export default function ClientProvider({
 }) {
   const pathname = usePathname();
 
-  // Add the root path to the list of paths where the navbar shouldn't appear
   if (
     pathname === "/" ||
     pathname === "/auth/signin" ||

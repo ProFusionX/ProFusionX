@@ -1,6 +1,6 @@
-import "../app/globals.css"; // Ensure the path is correct
+import "../app/globals.css";
 import type { AppProps } from "next/app";
-import RootLayout from "../app/layout"; // Updated import to layout.tsx
+import RootLayout from "../app/layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
